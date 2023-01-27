@@ -50,6 +50,7 @@ func (r *repository) Create(p domain.Product) (domain.Product, error) {
 	return p, nil
 }
 
+
 func (r *repository) Delete(id int) error {
 	err := r.storage.Delete(id)
 	if err != nil {

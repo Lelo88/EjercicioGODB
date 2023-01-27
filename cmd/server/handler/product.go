@@ -2,9 +2,9 @@ package handler
 
 import (
 	"errors"
-	"os"
+	//"os"
 	"strconv"
-	"strings"
+	//"strings"
 
 	"github.com/Lelo88/EjercicioGODB.git/internal/domain"
 	"github.com/Lelo88/EjercicioGODB.git/internal/product"
@@ -58,7 +58,7 @@ func validateEmptys(product *domain.Product) (bool, error) {
 }
 
 // validateExpiration valida que la fecha de expiracion sea valida
-func validateExpiration(exp string) (bool, error) {
+/*func validateExpiration(exp string) (bool, error) {
 	dates := strings.Split(exp, "/")
 	list := []int{}
 	if len(dates) != 3 {
@@ -76,13 +76,13 @@ func validateExpiration(exp string) (bool, error) {
 		return false, errors.New("invalid expiration date, date must be between 1 and 31/12/9999")
 	}
 	return true, nil
-}
+}*/
 
 // Post crea un nuevo producto
 func (h *productHandler) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var product domain.Product
-		token := c.GetHeader("TOKEN")
+		/*token := c.GetHeader("TOKEN")
 		if token == "" {
 			web.Failure(c, 401, errors.New("token not found"))
 			return
@@ -90,7 +90,7 @@ func (h *productHandler) Post() gin.HandlerFunc {
 		if token != os.Getenv("TOKEN") {
 			web.Failure(c, 401, errors.New("invalid token"))
 			return
-		}
+		}*/
 		err := c.ShouldBindJSON(&product)
 		if err != nil {
 			web.Failure(c, 400, errors.New("invalid json"))
@@ -101,11 +101,11 @@ func (h *productHandler) Post() gin.HandlerFunc {
 			web.Failure(c, 400, err)
 			return
 		}
-		valid, err = validateExpiration(product.Expiration)
+		/*valid, err = validateExpiration(product.Expiration)
 		if !valid {
 			web.Failure(c, 400, err)
 			return
-		}
+		}*/
 		p, err := h.s.Create(product)
 		if err != nil {
 			web.Failure(c, 400, err)
@@ -118,7 +118,7 @@ func (h *productHandler) Post() gin.HandlerFunc {
 // Delete elimina un producto
 func (h *productHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("TOKEN")
+		/*token := c.GetHeader("TOKEN")
 		if token == "" {
 			web.Failure(c, 401, errors.New("token not found"))
 			return
@@ -126,7 +126,7 @@ func (h *productHandler) Delete() gin.HandlerFunc {
 		if token != os.Getenv("TOKEN") {
 			web.Failure(c, 401, errors.New("invalid token"))
 			return
-		}
+		}*/
 		idParam := c.Param("id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
@@ -145,7 +145,7 @@ func (h *productHandler) Delete() gin.HandlerFunc {
 // Put actualiza un producto
 func (h *productHandler) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("TOKEN")
+		/*token := c.GetHeader("TOKEN")
 		if token == "" {
 			web.Failure(c, 401, errors.New("token not found"))
 			return
@@ -153,7 +153,7 @@ func (h *productHandler) Put() gin.HandlerFunc {
 		if token != os.Getenv("TOKEN") {
 			web.Failure(c, 401, errors.New("invalid token"))
 			return
-		}
+		}*/
 		idParam := c.Param("id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
@@ -180,11 +180,11 @@ func (h *productHandler) Put() gin.HandlerFunc {
 			web.Failure(c, 400, err)
 			return
 		}
-		valid, err = validateExpiration(product.Expiration)
+		/*valid, err = validateExpiration(product.Expiration)
 		if !valid {
 			web.Failure(c, 400, err)
 			return
-		}
+		}*/
 		p, err := h.s.Update(id, product)
 		if err != nil {
 			web.Failure(c, 409, err)
@@ -205,7 +205,7 @@ func (h *productHandler) Patch() gin.HandlerFunc {
 		Price       float64 `json:"price,omitempty"`
 	}
 	return func(c *gin.Context) {
-		token := c.GetHeader("TOKEN")
+		/*token := c.GetHeader("TOKEN")
 		if token == "" {
 			web.Failure(c, 401, errors.New("token not found"))
 			return
@@ -213,7 +213,7 @@ func (h *productHandler) Patch() gin.HandlerFunc {
 		if token != os.Getenv("TOKEN") {
 			web.Failure(c, 401, errors.New("invalid token"))
 			return
-		}
+		}*/
 		var r Request
 		idParam := c.Param("id")
 		id, err := strconv.Atoi(idParam)
@@ -238,13 +238,13 @@ func (h *productHandler) Patch() gin.HandlerFunc {
 			Expiration:  r.Expiration,
 			Price:       r.Price,
 		}
-		if update.Expiration != "" {
+		/*if update.Expiration != "" {
 			valid, err := validateExpiration(update.Expiration)
 			if !valid {
 				web.Failure(c, 400, err)
 				return
 			}
-		}
+		}*/
 		p, err := h.s.Update(id, update)
 		if err != nil {
 			web.Failure(c, 409, err)

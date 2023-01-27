@@ -3,8 +3,8 @@ package product
 import (
 	"errors"
 
-	"github.com/Lelo88/EjercicioGODB.git/pkg/store"
 	"github.com/Lelo88/EjercicioGODB.git/internal/domain"
+	"github.com/Lelo88/EjercicioGODB.git/pkg/store"
 )
 
 type Repository interface {
@@ -37,11 +37,14 @@ func (r *repository) GetByID(id int) (domain.Product, error) {
 }
 
 func (r *repository) Create(p domain.Product) (domain.Product, error) {
-	if !r.storage.Exists(p.CodeValue) {
+	
+	err := r.storage.Create(p)
+	
+	if r.storage.Exists(p.CodeValue) {
 		return domain.Product{}, errors.New("code value already exists")
 	}
-	err := r.storage.Create(p)
-	if err != nil {
+	
+	if err == nil {
 		return domain.Product{}, errors.New("error creating product")
 	}
 	return p, nil

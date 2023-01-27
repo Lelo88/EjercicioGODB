@@ -12,11 +12,35 @@ import (
 
 func main() {
 
-	storage := store.NewJsonStore("./products.json")
+	/*storage := store.NewJsonStore("./products.json")
 
 	repo := product.NewRepository(storage)
 	service := product.NewService(repo)
+	productHandler := handler.NewProductHandler(service)*/
+
+	databaseConfig := &mysql.Config{
+		User:      "root",
+		Passwd:    "",
+		Addr:      "localhost:3306",
+		DBName:    "my_db",
+		ParseTime: true,
+	}
+
+	db, err := sql.Open("mysql", databaseConfig.FormatDSN())
+	if err!= nil {
+		panic(err)
+	}
+
+	if err = db.Ping(); err!= nil {
+		panic(err)
+	}
+
+	storage := store.NewSQLStore(db)
+	repo:=product.NewRepository(storage)
+	service:=product.NewService(repo)
 	productHandler := handler.NewProductHandler(service)
+	
+
 
 	r := gin.Default()
 
@@ -28,19 +52,6 @@ func main() {
 		products.DELETE(":id", productHandler.Delete())
 		products.PATCH(":id", productHandler.Patch())
 		products.PUT(":id", productHandler.Put())
-	}
-
-	databaseConfig := &mysql.Config{
-		User:         	"root",
-		Passwd: 		"",
-		Addr: 			"localhost:3306",
-		DBName: 		"my_db",
-	}
-
-	db, err := sql.Open("mysql",databaseConfig.FormatDSN())
-
-	if err = db.Ping(); err!= nil {
-		panic(err)
 	}
 
 	r.Run(":8080")

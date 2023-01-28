@@ -44,7 +44,7 @@ func (r *repository) Create(p domain.Product) (domain.Product, error) {
 		return domain.Product{}, errors.New("code value already exists")
 	}
 	
-	if err == nil {
+	if err != nil {
 		return domain.Product{}, errors.New("error creating product")
 	}
 	return p, nil

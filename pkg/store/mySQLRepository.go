@@ -10,12 +10,14 @@ import (
 
 type MySqlRepository struct {
 	
+	StoreInterface
+
 	Database *sql.DB
 }
 
 func NewSQLStore (db *sql.DB) StoreInterface {
 	return &MySqlRepository{
-		db,
+		Database: db,
 	}
 }
 

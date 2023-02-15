@@ -71,7 +71,6 @@ func (repository *MySqlRepository) Create(product domain.Product) error{
         }
 	}
 	
-
 	rowsAffected , err := result.RowsAffected()
 
 	if err != nil{
